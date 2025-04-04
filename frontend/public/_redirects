@@ -1,0 +1,5 @@
+# API proxy - CORS sorunlarını önlemek için
+/api/*  https://modern-ecommerce-fullstack.onrender.com/api/:splat  200
+
+# SPA yönlendirmeleri için
+/*  /index.html  200

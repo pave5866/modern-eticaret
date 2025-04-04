@@ -1,0 +1,108 @@
+.product-card {
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.product-image-container {
+  overflow: hidden;
+  position: relative;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.1);
+}
+
+.product-title {
+  color: #333;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.product-title:hover {
+  color: #1677ff;
+}
+
+.product-category {
+  text-transform: capitalize;
+  font-size: 12px;
+}
+
+.product-price {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+/* Dark theme uyumluluğu */
+[data-theme="dark"] .product-card {
+  background-color: #1f1f1f;
+}
+
+[data-theme="dark"] .product-title {
+  color: #f5f5f5;
+}
+
+[data-theme="dark"] .product-title:hover {
+  color: #1890ff;
+}
+
+[data-theme="dark"] .product-description {
+  color: #b3b3b3;
+}
+
+/* Responsive tasarım */
+@media (max-width: 576px) {
+  .product-image-container {
+    height: 150px;
+  }
+}
+
+/* Animasyonlar */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.product-card {
+  animation: fadeIn 0.5s ease-in-out;
+}

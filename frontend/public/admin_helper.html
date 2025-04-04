@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Yardımcı Araçları</title>
+    <style>
+        :root {
+            --primary-color: #3f51b5;
+            --secondary-color: #f50057;
+            --success-color: #4caf50;
+            --error-color: #f44336;
+            --text-color: #333;
+            --bg-color: #f5f5f5;
+            --card-bg: #fff;
+            --border-color: #e0e0e0;
+        }
+
+        body.dark-mode {
+            --primary-color: #5c6bc0;
+            --secondary-color: #ff4081;
+            --success-color: #66bb6a;
+            --error-color: #e57373;
+            --text-color: #f5f5f5;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --border-color: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        input, select {
+            padding: 12px 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #303f9f;
+        }
+
+        .response {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .response.success {
+            background-color: rgba(76, 175, 80, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .response.error {
+            background-color: rgba(244, 67, 54, 0.1);
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+        }
+
+        pre {
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin-top: 10px;
+            white-space: pre-wrap;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            border-radius: 6px 6px 0 0;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-bottom: none;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background-color: var(--card-bg);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .help-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .api-url-display {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: rgba(63, 81, 181, 0.1);
+            border-radius: 6px;
+            font-family: monospace;
+            word-break: break-all;
+        }
+
+        .config-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .config-row label {
+            min-width: 120px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+            
+            .config-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .config-row label {
+                min-width: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Admin Yardımcı Araçları</h1>
+            <p>Bu sayfa, admin işlemlerini gerçekleştirmenize yardımcı olur</p>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </header>
+
+        <div class="api-url-display" id="apiUrlDisplay">
+            API URL: <span id="currentApiUrl">-</span>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="create-admin">Admin Oluştur</div>
+            <div class="tab" data-tab="self-promote">Kendini Admin Yap</div>
+            <div class="tab" data-tab="config">API Yapılandırma</div>
+        </div>
+
+        <div class="tab-content active" id="create-admin">
+            <div class="card">
+                <h2>Yeni Admin Oluştur</h2>
+                <form id="createAdminForm">
+                    <div class="form-group">
+                        <label for="name">Ad Soyad</label>
+                        <input type="text" id="name" name="name" required placeholder="Örn: Ali Yılmaz">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-posta</label>
+                        <input type="email" id="email" name="email" required placeholder="ornek@mail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Şifre</label>
+                        <input type="password" id="password" name="password" required placeholder="Güçlü bir şifre girin">
+                    </div>
+                    <button type="submit">
+                        <div class="spinner" id="createAdminSpinner"></div>
+                        Admin Oluştur
+                    </button>
+                </form>
+                <div class="response" id="createAdminResponse"></div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="self-promote">
+            <div class="card">
+                <h2>Kendini Admin Yap</h2>
+                <p class="help-text">Mevcut hesabınızı admin rolüne yükseltir.</p>
+                <form id="selfPromoteForm">
+                    <div class="form-group">
+                        <label for="selfEmail">E-posta</label>
+                        <input type="email" id="selfEmail" name="email" required placeholder="ornek@mail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="selfPassword">Şifre</label>
+                        <input type="password" id="selfPassword" name="password" required placeholder="Mevcut şifreniz">
+                    </div>
+                    <button type="submit">
+                        <div class="spinner" id="selfPromoteSpinner"></div>
+                        Admin Yetkisi Al
+                    </button>
+                </form>
+                <div class="response" id="selfPromoteResponse"></div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="config">
+            <div class="card">
+                <h2>API Yapılandırma</h2>
+                <div class="config-row">
+                    <label for="apiUrl">API URL</label>
+                    <input type="text" id="apiUrl" placeholder="https://example.com/api">
+                </div>
+                <div class="config-row">
+                    <label for="useDummyData">Dummy Veri</label>
+                    <select id="useDummyData">
+                        <option value="false">Hayır - Gerçek API kullan</option>
+                        <option value="true">Evet - Dummy veri kullan</option>
+                    </select>
+                </div>
+                <button id="saveConfig">Ayarları Kaydet</button>
+                <div class="response" id="configResponse"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme switcher
+        const themeToggle = document.getElementById('themeToggle');
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && prefersDarkMode)) {
+            document.body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeToggle.textContent = '☀️';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeToggle.textContent = '🌙';
+            }
+        });
+
+        // Tab switching
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Deactivate all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                
+                // Activate selected tab and content
+                tab.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // API configuration management
+        const apiUrlDisplay = document.getElementById('currentApiUrl');
+        const apiUrlInput = document.getElementById('apiUrl');
+        const useDummyDataSelect = document.getElementById('useDummyData');
+
+        // Default API URL based on environment
+        const defaultApiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+            ? 'http://localhost:5000/api' 
+            : 'https://modern-ecommerce-fullstack.onrender.com/api';
+
+        // Load saved config
+        const savedApiUrl = localStorage.getItem('apiUrl') || defaultApiUrl;
+        const savedUseDummyData = localStorage.getItem('useDummyData') || 'false';
+
+        apiUrlInput.value = savedApiUrl;
+        useDummyDataSelect.value = savedUseDummyData;
+        apiUrlDisplay.textContent = savedApiUrl;
+
+        // Save config
+        document.getElementById('saveConfig').addEventListener('click', () => {
+            const newApiUrl = apiUrlInput.value.trim();
+            const newUseDummyData = useDummyDataSelect.value;
+            
+            if (!newApiUrl) {
+                showResponse('configResponse', 'API URL boş olamaz', 'error');
+                return;
+            }
+
+            try {
+                new URL(newApiUrl); // URL formatını doğrula
+                
+                localStorage.setItem('apiUrl', newApiUrl);
+                localStorage.setItem('useDummyData', newUseDummyData);
+                apiUrlDisplay.textContent = newApiUrl;
+                
+                showResponse('configResponse', 'Ayarlar başarıyla kaydedildi', 'success');
+            } catch (e) {
+                showResponse('configResponse', 'Geçersiz URL formatı', 'error');
+            }
+        });
+
+        // API Call function
+        async function makeApiCall(endpoint, data, responseElementId, spinnerId, method = 'POST') {
+            const spinner = document.getElementById(spinnerId);
+            spinner.style.display = 'inline-block';
+            
+            const apiUrl = localStorage.getItem('apiUrl') || defaultApiUrl;
+            const fullUrl = `${apiUrl}${endpoint}`;
+            
+            try {
+                const response = await fetch(fullUrl, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const responseData = await response.json();
+                
+                if (response.ok) {
+                    showResponse(responseElementId, `İşlem başarılı: ${responseData.message || 'İşlem tamamlandı'}`, 'success', responseData);
+                    return responseData;
+                } else {
+                    showResponse(responseElementId, `Hata: ${responseData.message || response.statusText}`, 'error', responseData);
+                    return null;
+                }
+            } catch (error) {
+                showResponse(responseElementId, `Bağlantı hatası: ${error.message}`, 'error');
+                return null;
+            } finally {
+                spinner.style.display = 'none';
+            }
+        }
+
+        // Helper to show responses
+        function showResponse(elementId, message, type, data = null) {
+            const responseElement = document.getElementById(elementId);
+            responseElement.className = `response ${type}`;
+            
+            let html = `<p>${message}</p>`;
+            if (data) {
+                html += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            }
+            
+            responseElement.innerHTML = html;
+            responseElement.style.display = 'block';
+            
+            // Scroll to response
+            responseElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Create Admin Form
+        document.getElementById('createAdminForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            const result = await makeApiCall('/admin/create', { name, email, password }, 'createAdminResponse', 'createAdminSpinner');
+            
+            if (result && result.success) {
+                document.getElementById('createAdminForm').reset();
+            }
+        });
+
+        // Self Promote Form
+        document.getElementById('selfPromoteForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('selfEmail').value;
+            const password = document.getElementById('selfPassword').value;
+            
+            const result = await makeApiCall('/admin/self-promote', { email, password }, 'selfPromoteResponse', 'selfPromoteSpinner', 'PUT');
+            
+            if (result && result.success) {
+                document.getElementById('selfPromoteForm').reset();
+                
+                // Store token if provided
+                if (result.token) {
+                    localStorage.setItem('token', result.token);
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                }
+            }
+        });
+    </script>
+</body>
+</html>
